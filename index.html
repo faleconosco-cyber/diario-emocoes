@@ -1,0 +1,1123 @@
+<title>Diário das Emoções</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --paper: #FBF2EE;
+    --surface: #FFFFFF;
+    --surface-2: #FDDED5;
+    --ink: #241C1A;
+    --ink-2: #55494A;
+    --ink-3: #8A7B79;
+    --line: #E7D3CC;
+    --line-strong: #D2B3A9;
+    --accent: #3B503F;
+    --accent-soft: #E4EBE3;
+    --detail: #FD745D;
+    --focus: #FD745D;
+
+    --f-alegria: #9A6B12;
+    --f-calma: #3B503F;
+    --f-tristeza: #46617A;
+    --f-medo: #6C5B7B;
+    --f-raiva: #6B2F3C;
+    --f-cansaco: #6E6558;
+    --f-surpresa: #B0567E;
+
+    --step-1: clamp(0.75rem, 0.72rem + 0.15vw, 0.82rem);
+    --step0: 1rem;
+    --step1: 1.15rem;
+    --step2: clamp(1.4rem, 1.2rem + 1vw, 1.75rem);
+    --step3: clamp(1.9rem, 1.5rem + 2vw, 2.6rem);
+
+    --radius: 10px;
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1C1614;
+      --surface: #26201E;
+      --surface-2: #302825;
+      --ink: #F6E9E4;
+      --ink-2: #D2C1BB;
+      --ink-3: #A08F8A;
+      --line: #3A302C;
+      --line-strong: #52443F;
+      --accent: #9CBBA0;
+      --accent-soft: #2A342A;
+      --detail: #FD745D;
+    --focus: #FD745D;
+
+      --f-alegria: #DCB25F;
+      --f-calma: #9CBBA0;
+      --f-tristeza: #9DBAD1;
+      --f-medo: #BCA7CC;
+      --f-raiva: #E29BA7;
+      --f-cansaco: #C3B7A4;
+      --f-surpresa: #E9A0BE;
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #1C1614;
+    --surface: #26201E;
+    --surface-2: #302825;
+    --ink: #F6E9E4;
+    --ink-2: #D2C1BB;
+    --ink-3: #A08F8A;
+    --line: #3A302C;
+    --line-strong: #52443F;
+    --accent: #9CBBA0;
+    --accent-soft: #2A342A;
+    --detail: #FD745D;
+    --focus: #FD745D;
+
+    --f-alegria: #DCB25F;
+    --f-calma: #9CBBA0;
+    --f-tristeza: #9DBAD1;
+    --f-medo: #BCA7CC;
+    --f-raiva: #E29BA7;
+    --f-cansaco: #C3B7A4;
+    --f-surpresa: #E9A0BE;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Montserrat", "Segoe UI", system-ui, sans-serif;
+    font-size: var(--step0);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 28px 20px 72px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  /* ---- cabeçalho ---- */
+  header { display: flex; flex-direction: column; gap: 10px; }
+
+  .eyebrow {
+    font-family: "Montserrat", system-ui, sans-serif;
+    font-size: var(--step-1);
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  h1 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 600;
+    font-size: var(--step3);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .intro { color: var(--ink-2); margin: 0; max-width: 58ch; }
+
+  /* ---- chamada de novo registro ---- */
+  .newbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .mood-btn {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 600;
+    font-size: var(--step1);
+    background: var(--accent);
+    color: var(--paper);
+    border: none;
+    border-radius: 999px;
+    padding: 12px 24px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 1px 0 var(--line-strong);
+  }
+
+  .mood-btn span { font-family: "Montserrat", system-ui, sans-serif; font-size: 1.2em; color: var(--detail); }
+  .mood-btn:hover { filter: brightness(1.08); }
+
+  .newbar .hint { flex: 1; min-width: 12ch; }
+
+  /* ---- linha do dia ---- */
+  .today-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .today-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .today-title {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 600;
+    font-size: var(--step1);
+    margin: 0;
+  }
+
+  .strip {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    padding-bottom: 4px;
+  }
+
+  .strip li {
+    flex: none;
+    min-width: 92px;
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--fam, var(--line-strong));
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--surface-2);
+  }
+
+  .strip .s-time {
+    font-family: "Montserrat", system-ui, sans-serif;
+    font-size: var(--step-1);
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-3);
+  }
+
+  .strip .s-face { font-size: 1.3rem; line-height: 1.1; }
+
+  .strip .s-feel {
+    font-size: var(--step-1);
+    color: var(--fam);
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .strip .s-int {
+    font-family: "Montserrat", system-ui, sans-serif;
+    font-size: 0.68rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-3);
+  }
+
+  .strip .s-empty {
+    min-width: 0;
+    border: 1px dashed var(--line-strong);
+    border-top: 1px dashed var(--line-strong);
+    background: transparent;
+    color: var(--ink-3);
+    font-size: var(--step-1);
+  }
+
+  /* ---- dias no histórico ---- */
+  .day-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 6px;
+  }
+
+  .day-label {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 600;
+    font-size: var(--step0);
+    color: var(--ink);
+  }
+
+  .day-count {
+    font-family: "Montserrat", system-ui, sans-serif;
+    font-size: var(--step-1);
+    color: var(--ink-3);
+  }
+
+  .day-rule { flex: 1; height: 1px; background: var(--line); }
+
+  /* ---- cartões ---- */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .step { display: flex; flex-direction: column; gap: 10px; }
+
+  .step-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .step-num {
+    font-family: "Montserrat", system-ui, sans-serif;
+    font-size: var(--step-1);
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    color: var(--detail);
+    border: 1px solid var(--detail);
+    border-radius: 3px;
+    padding: 1px 6px;
+    flex: none;
+  }
+
+  .step-title {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 600;
+    font-size: var(--step1);
+    margin: 0;
+  }
+
+  .hint { color: var(--ink-3); font-size: var(--step-1); margin: 0; }
+
+  /* ---- emojis ---- */
+  .emoji-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+    gap: 8px;
+  }
+
+  .emoji-btn {
+    font-family: inherit;
+    background: var(--surface-2);
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    padding: 10px 4px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    color: var(--ink-2);
+    font-size: var(--step-1);
+    transition: border-color .12s ease, background .12s ease;
+  }
+
+  .emoji-btn span.face { font-size: 1.6rem; line-height: 1; }
+  .emoji-btn:hover { border-color: var(--line-strong); }
+  .emoji-btn[aria-pressed="true"] {
+    border-color: currentColor;
+    background: var(--surface);
+    color: var(--fam);
+    font-weight: 700;
+  }
+
+  /* ---- chips de sentimento ---- */
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+
+  .chip {
+    font-family: inherit;
+    font-size: var(--step-1);
+    background: transparent;
+    color: var(--ink-2);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: border-color .12s ease, color .12s ease;
+  }
+
+  .chip:hover { border-color: var(--fam); color: var(--fam); }
+
+  .chip[aria-pressed="true"] {
+    border-color: var(--fam);
+    color: var(--fam);
+    font-weight: 700;
+    box-shadow: inset 0 0 0 1px var(--fam);
+  }
+
+  /* ---- intensidade ---- */
+  .intensity { display: flex; align-items: center; gap: 14px; }
+  .intensity input[type="range"] { flex: 1; accent-color: var(--accent); }
+
+  .intensity output {
+    font-family: "Montserrat", system-ui, sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-size: var(--step1);
+    color: var(--ink);
+    min-width: 3.2ch;
+    text-align: right;
+  }
+
+  /* ---- campos ---- */
+  .when-step {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 18px;
+  }
+
+  .when-step label { flex: none; }
+
+  input[type="datetime-local"] {
+    font-family: "Montserrat", system-ui, sans-serif;
+    font-size: var(--step0);
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 8px 10px;
+  }
+
+  textarea, input[type="text"] {
+    font-family: inherit;
+    font-size: var(--step0);
+    color: var(--ink);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    width: 100%;
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  textarea { min-height: 74px; }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* ---- botões ---- */
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  button.primary, button.ghost {
+    font-family: inherit;
+    font-size: var(--step0);
+    font-weight: 700;
+    border-radius: var(--radius);
+    padding: 11px 18px;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+
+  button.primary { background: var(--accent); color: var(--paper); }
+  button.primary:hover { filter: brightness(1.08); }
+
+  button.ghost {
+    background: transparent;
+    color: var(--ink-2);
+    border-color: var(--line-strong);
+    font-weight: 500;
+  }
+
+  button.ghost:hover { color: var(--ink); border-color: var(--ink-3); }
+
+  .status {
+    font-size: var(--step-1);
+    color: var(--accent);
+    min-height: 1.4em;
+    margin: 0;
+  }
+
+  /* ---- histórico ---- */
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 8px;
+  }
+
+  h2 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 600;
+    font-size: var(--step2);
+    margin: 0;
+  }
+
+  .count {
+    font-family: "Montserrat", system-ui, sans-serif;
+    font-size: var(--step-1);
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-3);
+  }
+
+  .entries { display: flex; flex-direction: column; gap: 14px; }
+
+  .entry {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--fam, var(--line-strong));
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .entry-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .entry-face { font-size: 1.4rem; line-height: 1; }
+
+  .entry-when {
+    font-family: "Montserrat", system-ui, sans-serif;
+    font-size: var(--step-1);
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-3);
+  }
+
+  .entry-feel {
+    color: var(--fam);
+    font-weight: 700;
+    font-size: var(--step-1);
+  }
+
+  .tag {
+    font-family: "Montserrat", system-ui, sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    padding: 1px 5px;
+  }
+
+  .entry-scale {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: "Montserrat", system-ui, sans-serif;
+    font-size: var(--step-1);
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-3);
+  }
+
+  .bar {
+    flex: 1;
+    height: 5px;
+    background: var(--surface-2);
+    border-radius: 999px;
+    overflow: hidden;
+    max-width: 180px;
+  }
+
+  .bar i { display: block; height: 100%; background: var(--fam); }
+
+  .entry dl { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+
+  .entry dt {
+    font-family: "Montserrat", system-ui, sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .entry dd { margin: 0 0 2px; color: var(--ink-2); }
+
+  .entry-tools { display: flex; gap: 12px; }
+
+  .link-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    font-size: var(--step-1);
+    color: var(--ink-3);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .link-btn:hover { color: var(--ink); }
+
+  .empty {
+    color: var(--ink-3);
+    font-size: var(--step-1);
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--radius);
+    padding: 18px;
+    text-align: center;
+  }
+
+  footer {
+    color: var(--ink-3);
+    font-size: var(--step-1);
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+  }
+
+  footer p { margin: 0 0 4px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+
+  @media print {
+    body { background: #fff; color: #000; }
+    .no-print { display: none !important; }
+    .entry { break-inside: avoid; border-color: #999; }
+    .wrap { padding: 0; gap: 14px; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Cláudia Botelho · Psicologia e Orientação Profissional</p>
+    <h1>Diário das Emoções</h1>
+    <p class="intro">Cinco passos curtos para registrar como você está agora. Não existe resposta certa — o que interessa é o que você percebeu. E o humor muda mesmo várias vezes no mesmo dia: sempre que mudar, faça um registro novo.</p>
+  </header>
+
+  <form class="card no-print" id="form">
+
+    <div class="step when-step">
+      <label class="hint" for="quando">Quando foi esse momento?</label>
+      <input type="datetime-local" id="quando">
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-num">1</span>
+        <h2 class="step-title">Que carinha combina com agora?</h2>
+      </div>
+      <div class="emoji-row" id="emojiRow"></div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-num">2</span>
+        <h2 class="step-title">Que nome esse sentimento tem?</h2>
+      </div>
+      <p class="hint">Pode marcar mais de um, ou escrever com as suas palavras.</p>
+      <div class="chips" id="chips"></div>
+      <input type="text" id="feelFree" placeholder="Outro sentimento (opcional)">
+      <div class="intensity">
+        <label class="hint" for="intensity" style="flex:none">Intensidade</label>
+        <input type="range" id="intensity" min="1" max="10" value="5" step="1">
+        <output id="intensityOut">5</output>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-num">3</span>
+        <h2 class="step-title">O que estava acontecendo?</h2>
+      </div>
+      <textarea id="atividade" placeholder="Onde você estava, com quem, o que estava fazendo."></textarea>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-num">4</span>
+        <h2 class="step-title">Que pensamento passou pela sua cabeça?</h2>
+      </div>
+      <textarea id="pensamento" placeholder="A frase que apareceu na hora, mesmo que pareça exagerada."></textarea>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-num">5</span>
+        <h2 class="step-title">O que você fez com isso?</h2>
+      </div>
+      <textarea id="acao" placeholder="O que você fez na hora — e o que gostaria de fazer numa próxima vez."></textarea>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="primary">Salvar registro</button>
+      <button type="reset" class="ghost" id="clearForm">Limpar</button>
+    </div>
+    <p class="status" id="status" role="status"></p>
+  </form>
+
+  <section class="today-card" id="todayCard" hidden>
+    <div class="today-head">
+      <h2 class="today-title">Seu dia até agora</h2>
+      <span class="day-count" id="todayTally"></span>
+    </div>
+    <ol class="strip" id="todayStrip"></ol>
+    <div class="newbar no-print">
+      <button type="button" class="mood-btn" id="newBtn">
+        <span aria-hidden="true">+</span> Mudei de humor!
+      </button>
+      <p class="hint" id="todayCount"></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>Meus registros</h2>
+      <span class="count" id="count">0 registros</span>
+    </div>
+    <div class="entries" id="entries"></div>
+  </section>
+
+  <div class="actions no-print">
+    <button type="button" class="primary" id="copyBtn">Copiar para enviar</button>
+    <button type="button" class="ghost" id="printBtn">Imprimir / salvar em PDF</button>
+  </div>
+  <p class="status no-print" id="exportStatus" role="status"></p>
+
+  <footer>
+    <p>Os registros ficam salvos só neste aparelho, neste navegador — nada é enviado automaticamente para ninguém.</p>
+    <p>Para levar à sessão, toque em <strong>Copiar para enviar</strong> e cole no WhatsApp, ou use <strong>Imprimir / salvar em PDF</strong>.</p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var FAMILIES = [
+    { key: "alegria",  face: "😊", label: "Alegria",  color: "var(--f-alegria)",  words: ["Contente", "Animada", "Grata", "Aliviada", "Orgulhosa"] },
+    { key: "calma",    face: "🙂", label: "Calma",    color: "var(--f-calma)",    words: ["Tranquila", "Serena", "Confiante", "Descansada"] },
+    { key: "tristeza", face: "😔", label: "Tristeza", color: "var(--f-tristeza)", words: ["Desanimada", "Sozinha", "Magoada", "Vazia", "Com saudade"] },
+    { key: "medo",     face: "😰", label: "Medo",     color: "var(--f-medo)",     words: ["Ansiosa", "Insegura", "Preocupada", "Assustada"] },
+    { key: "raiva",    face: "😠", label: "Raiva",    color: "var(--f-raiva)",    words: ["Irritada", "Frustrada", "Injustiçada", "Impaciente"] },
+    { key: "cansaco",  face: "😩", label: "Cansaço",  color: "var(--f-cansaco)",  words: ["Exausta", "Sem energia", "Sobrecarregada"] },
+    { key: "surpresa", face: "😲", label: "Surpresa", color: "var(--f-surpresa)", words: ["Espantada", "Confusa", "Curiosa"] }
+  ];
+
+  var STORE = "rumo-diario-emocoes-v1";
+
+  var state = { family: null, feelings: [] };
+  var entries = [];
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  function famByKey(k) {
+    for (var i = 0; i < FAMILIES.length; i++) { if (FAMILIES[i].key === k) return FAMILIES[i]; }
+    return null;
+  }
+
+  /* ---------- armazenamento ---------- */
+
+  function load() {
+    try {
+      var raw = window.localStorage.getItem(STORE);
+      if (raw) { entries = JSON.parse(raw) || []; return; }
+    } catch (e) { /* navegador privativo, cookies bloqueados: segue sem histórico */ }
+    entries = [seed()];
+  }
+
+  function save() {
+    try {
+      window.localStorage.setItem(STORE, JSON.stringify(entries));
+    } catch (e) {
+      $("exportStatus").textContent = "Este navegador não está guardando os registros. Copie ou imprima antes de fechar a página.";
+    }
+  }
+
+  function seed() {
+    return {
+      id: "exemplo",
+      exemplo: true,
+      when: new Date().toISOString(),
+      family: "medo",
+      feelings: ["Ansiosa", "Insegura"],
+      intensity: 7,
+      atividade: "Fim da tarde, sozinha em casa, olhando o celular antes de começar a estudar.",
+      pensamento: "“Eu não vou dar conta de tudo isso a tempo.”",
+      acao: "Fiquei rolando o feed por quase uma hora. Na próxima quero fechar o celular e escrever só as três tarefas do dia."
+    };
+  }
+
+  /* ---------- formulário ---------- */
+
+  function buildEmojis() {
+    var row = $("emojiRow");
+    FAMILIES.forEach(function (f) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "emoji-btn";
+      b.setAttribute("aria-pressed", "false");
+      b.style.setProperty("--fam", f.color);
+      b.innerHTML = '<span class="face">' + f.face + "</span>" + f.label;
+      b.addEventListener("click", function () {
+        state.family = state.family === f.key ? null : f.key;
+        syncEmojis();
+      });
+      row.appendChild(b);
+    });
+  }
+
+  function syncEmojis() {
+    var btns = $("emojiRow").children;
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].setAttribute("aria-pressed", FAMILIES[i].key === state.family ? "true" : "false");
+    }
+  }
+
+  function buildChips() {
+    var box = $("chips");
+    FAMILIES.forEach(function (f) {
+      f.words.forEach(function (w) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "chip";
+        b.textContent = w;
+        b.setAttribute("aria-pressed", "false");
+        b.style.setProperty("--fam", f.color);
+        b.addEventListener("click", function () {
+          var at = state.feelings.indexOf(w);
+          if (at === -1) {
+            state.feelings.push(w);
+            b.setAttribute("aria-pressed", "true");
+            if (!state.family) { state.family = f.key; syncEmojis(); }
+          } else {
+            state.feelings.splice(at, 1);
+            b.setAttribute("aria-pressed", "false");
+          }
+        });
+        box.appendChild(b);
+      });
+    });
+  }
+
+  function localValue(d) {
+    var p = function (n) { return n < 10 ? "0" + n : String(n); };
+    return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()) +
+           "T" + p(d.getHours()) + ":" + p(d.getMinutes());
+  }
+
+  function chosenWhen() {
+    var v = $("quando").value;
+    var d = v ? new Date(v) : new Date();
+    if (isNaN(d.getTime())) d = new Date();
+    return d.toISOString();
+  }
+
+  function resetForm() {
+    $("quando").value = localValue(new Date());
+    state = { family: null, feelings: [] };
+    syncEmojis();
+    var chips = $("chips").children;
+    for (var i = 0; i < chips.length; i++) { chips[i].setAttribute("aria-pressed", "false"); }
+    $("intensity").value = 5;
+    $("intensityOut").textContent = "5";
+  }
+
+  /* ---------- histórico ---------- */
+
+  function formatWhen(iso) {
+    var d = new Date(iso);
+    var p = function (n) { return n < 10 ? "0" + n : String(n); };
+    return p(d.getDate()) + "/" + p(d.getMonth() + 1) + "/" + d.getFullYear() + " · " + p(d.getHours()) + ":" + p(d.getMinutes());
+  }
+
+  var DIAS = ["domingo", "segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado"];
+  var MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+
+  function dayKey(iso) {
+    var d = new Date(iso);
+    return d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
+  }
+
+  function countOnDay(key) {
+    return entries.filter(function (e) { return dayKey(e.when) === key; }).length;
+  }
+
+  function dayHeader(iso, n) {
+    var d = new Date(iso);
+    var hoje = dayKey(iso) === dayKey(new Date().toISOString());
+    var wrap = document.createElement("div");
+    wrap.className = "day-head";
+
+    var label = document.createElement("span");
+    label.className = "day-label";
+    label.textContent = hoje ? "Hoje" : DIAS[d.getDay()] + ", " + d.getDate() + " de " + MESES[d.getMonth()];
+
+    var count = document.createElement("span");
+    count.className = "day-count";
+    count.textContent = n === 1 ? "1 registro" : n + " mudanças de humor";
+
+    var rule = document.createElement("span");
+    rule.className = "day-rule";
+
+    wrap.appendChild(label);
+    wrap.appendChild(count);
+    wrap.appendChild(rule);
+    return wrap;
+  }
+
+  function updateTodayCount() {
+    var n = countOnDay(dayKey(new Date().toISOString()));
+    var el = $("todayCount");
+    if (!n) {
+      el.textContent = "Sempre que o humor virar, toque aqui: começa um registro novo e nenhum dos anteriores se perde.";
+    } else if (n === 1) {
+      el.textContent = "Hoje você registrou 1 vez. Se mudar de novo, toque no botão — o de antes fica guardado.";
+    } else {
+      el.textContent = "Hoje você já registrou " + n + " momentos. Todos ficam guardados aqui embaixo.";
+    }
+  }
+
+  function renderToday() {
+    var key = dayKey(new Date().toISOString());
+    var todays = entries.filter(function (e) { return dayKey(e.when) === key; })
+      .sort(function (a, b) { return new Date(a.when) - new Date(b.when); });
+
+    var strip = $("todayStrip");
+    strip.textContent = "";
+    $("todayTally").textContent = todays.length === 1 ? "1 registro" : todays.length + " registros";
+
+    if (!todays.length) {
+      $("todayCard").hidden = true;
+      return;
+    }
+    $("todayCard").hidden = false;
+
+    todays.forEach(function (e) {
+      var f = famByKey(e.family) || FAMILIES[1];
+      var d = new Date(e.when);
+      var p = function (n) { return n < 10 ? "0" + n : String(n); };
+      var li = document.createElement("li");
+      li.style.setProperty("--fam", f.color);
+
+      var t = document.createElement("span");
+      t.className = "s-time";
+      t.textContent = p(d.getHours()) + ":" + p(d.getMinutes());
+
+      var face = document.createElement("span");
+      face.className = "s-face";
+      face.textContent = f.face;
+
+      var feel = document.createElement("span");
+      feel.className = "s-feel";
+      feel.textContent = e.feelings.length ? e.feelings[0] : f.label;
+
+      var int = document.createElement("span");
+      int.className = "s-int";
+      int.textContent = e.intensity + "/10";
+
+      li.appendChild(t);
+      li.appendChild(face);
+      li.appendChild(feel);
+      li.appendChild(int);
+      strip.appendChild(li);
+    });
+  }
+
+  function render() {
+    var box = $("entries");
+    box.textContent = "";
+    $("count").textContent = entries.length === 1 ? "1 registro" : entries.length + " registros";
+    updateTodayCount();
+    renderToday();
+
+    if (!entries.length) {
+      var empty = document.createElement("p");
+      empty.className = "empty";
+      empty.textContent = "Ainda não há registros. Preencha os cinco passos acima e toque em Salvar registro.";
+      box.appendChild(empty);
+      return;
+    }
+
+    var lastDay = "";
+    entries.forEach(function (e) {
+      var day = dayKey(e.when);
+      if (day !== lastDay) {
+        lastDay = day;
+        box.appendChild(dayHeader(e.when, countOnDay(day)));
+      }
+      var f = famByKey(e.family) || FAMILIES[1];
+      var art = document.createElement("article");
+      art.className = "entry";
+      art.style.setProperty("--fam", f.color);
+
+      var top = document.createElement("div");
+      top.className = "entry-top";
+      top.innerHTML =
+        '<span class="entry-face">' + f.face + "</span>" +
+        '<span class="entry-when"></span>' +
+        '<span class="entry-feel"></span>' +
+        (e.exemplo ? '<span class="tag">exemplo</span>' : "");
+      top.querySelector(".entry-when").textContent = formatWhen(e.when);
+      top.querySelector(".entry-feel").textContent = e.feelings.length ? e.feelings.join(", ") : f.label;
+      art.appendChild(top);
+
+      var scale = document.createElement("div");
+      scale.className = "entry-scale";
+      scale.innerHTML = '<span class="bar"><i style="width:' + (e.intensity * 10) + '%"></i></span>';
+      var num = document.createElement("span");
+      num.textContent = "intensidade " + e.intensity + "/10";
+      scale.appendChild(num);
+      art.appendChild(scale);
+
+      var dl = document.createElement("dl");
+      [["O que acontecia", e.atividade], ["Pensamento", e.pensamento], ["O que fiz", e.acao]].forEach(function (pair) {
+        if (!pair[1]) return;
+        var dt = document.createElement("dt");
+        dt.textContent = pair[0];
+        var dd = document.createElement("dd");
+        dd.textContent = pair[1];
+        dl.appendChild(dt);
+        dl.appendChild(dd);
+      });
+      art.appendChild(dl);
+
+      var tools = document.createElement("div");
+      tools.className = "entry-tools no-print";
+      var del = document.createElement("button");
+      del.type = "button";
+      del.className = "link-btn";
+      del.textContent = "Apagar este registro";
+      del.addEventListener("click", function () {
+        entries = entries.filter(function (x) { return x.id !== e.id; });
+        save();
+        render();
+      });
+      tools.appendChild(del);
+      art.appendChild(tools);
+
+      box.appendChild(art);
+    });
+  }
+
+  /* ---------- exportar ---------- */
+
+  function asText() {
+    var lines = ["DIÁRIO DAS EMOÇÕES", ""];
+    var last = "";
+    entries.forEach(function (e) {
+      var f = famByKey(e.family) || FAMILIES[1];
+      var day = dayKey(e.when);
+      if (day !== last) {
+        last = day;
+        var d = new Date(e.when);
+        var n = countOnDay(day);
+        lines.push("== " + DIAS[d.getDay()] + ", " + d.getDate() + " de " + MESES[d.getMonth()] +
+                   " — " + (n === 1 ? "1 registro" : n + " mudanças de humor") + " ==");
+        lines.push("");
+      }
+      lines.push("— " + formatWhen(e.when) + (e.exemplo ? "  (exemplo)" : ""));
+      lines.push("Emoção: " + f.label + (e.feelings.length ? " (" + e.feelings.join(", ") + ")" : "") + " — intensidade " + e.intensity + "/10");
+      if (e.atividade) lines.push("O que acontecia: " + e.atividade);
+      if (e.pensamento) lines.push("Pensamento: " + e.pensamento);
+      if (e.acao) lines.push("O que fiz: " + e.acao);
+      lines.push("");
+    });
+    return lines.join("\n");
+  }
+
+  /* ---------- ligações ---------- */
+
+  $("intensity").addEventListener("input", function () {
+    $("intensityOut").textContent = this.value;
+  });
+
+  $("form").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var free = $("feelFree").value.trim();
+    var feelings = state.feelings.slice();
+    if (free) feelings.push(free);
+
+    if (!state.family && !feelings.length) {
+      $("status").textContent = "Escolha ao menos uma carinha ou um sentimento antes de salvar.";
+      return;
+    }
+
+    entries.unshift({
+      id: String(Date.now()),
+      when: chosenWhen(),
+      family: state.family || "calma",
+      feelings: feelings,
+      intensity: Number($("intensity").value),
+      atividade: $("atividade").value.trim(),
+      pensamento: $("pensamento").value.trim(),
+      acao: $("acao").value.trim()
+    });
+
+    entries.sort(function (a, b) { return new Date(b.when) - new Date(a.when); });
+
+    save();
+    render();
+    this.reset();
+    resetForm();
+    $("status").textContent = "Registro salvo. Se o humor virar de novo mais tarde, toque em “Mudei de humor!” lá em cima.";
+    window.setTimeout(function () { $("status").textContent = ""; }, 6000);
+  });
+
+  $("clearForm").addEventListener("click", function () {
+    window.setTimeout(resetForm, 0);
+    $("status").textContent = "";
+  });
+
+  $("copyBtn").addEventListener("click", function () {
+    var text = asText();
+    var done = function () {
+      $("exportStatus").textContent = "Copiado. Agora é só colar no WhatsApp ou no e-mail.";
+      window.setTimeout(function () { $("exportStatus").textContent = ""; }, 5000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else {
+      fallback();
+    }
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); done(); }
+      catch (err) { $("exportStatus").textContent = "Não consegui copiar aqui. Use Imprimir / salvar em PDF."; }
+      document.body.removeChild(ta);
+    }
+  });
+
+  $("printBtn").addEventListener("click", function () { window.print(); });
+
+  $("newBtn").addEventListener("click", function () {
+    $("form").reset();
+    resetForm();
+    $("status").textContent = "Este é um registro novo — os anteriores continuam guardados em “Seu dia até agora”.";
+    $("form").scrollIntoView({ behavior: "smooth", block: "start" });
+    window.setTimeout(function () {
+      var first = $("emojiRow").firstChild;
+      if (first) first.focus();
+    }, 350);
+  });
+
+  buildEmojis();
+  buildChips();
+  $("quando").value = localValue(new Date());
+  load();
+  render();
+})();
+</script>
