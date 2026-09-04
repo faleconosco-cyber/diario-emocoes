@@ -304,7 +304,7 @@
   /* ---- emojis ---- */
   .emoji-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 8px;
   }
 
@@ -652,9 +652,9 @@
         <span class="step-num">2</span>
         <h2 class="step-title">Que nome esse sentimento tem?</h2>
       </div>
-      <p class="hint">Pode marcar mais de um, ou escrever com as suas palavras.</p>
+      <p class="hint">Escolha quantas palavras quiser — elas não precisam combinar com a carinha do passo 1. E se faltar alguma, escreva a sua no campo do fim.</p>
       <div class="chips" id="chips"></div>
-      <input type="text" id="feelFree" placeholder="Outro sentimento (opcional)">
+      <input type="text" id="feelFree" placeholder="Faltou uma palavra? Escreva a sua aqui">
       <div class="intensity">
         <label class="hint" for="intensity" style="flex:none">Intensidade</label>
         <input type="range" id="intensity" min="1" max="10" value="5" step="1">
