@@ -9,3 +9,8 @@ pensamento e ação.
 - Identidade visual: Editorial de Consultório — @claudiabotelhopsi.
 
 Publicação: Cloudflare Pages, build sem framework (diretório de saída: `/`).
+
+## Autoria
+
+Cláudia Botelho — psicóloga e orientadora profissional, Instituto Rumo
+faleconosco@institutorumo.com · (21) 99062-5330

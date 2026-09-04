@@ -582,6 +582,36 @@
 
   footer p { margin: 0 0 4px; }
 
+  .credit {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .credit-name {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: var(--step1);
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  .credit-role { margin: 0; color: var(--ink-2); }
+
+  .credit-links { margin: 4px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .credit-links a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--detail);
+    padding-bottom: 1px;
+  }
+
+  .credit-links a:hover { color: var(--detail); }
+
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; animation: none !important; }
   }
@@ -694,6 +724,16 @@
   <footer>
     <p>Os registros ficam salvos só neste aparelho, neste navegador — nada é enviado automaticamente para ninguém.</p>
     <p>Para levar à sessão, toque em <strong>Copiar para enviar</strong> e cole no WhatsApp, ou use <strong>Imprimir / salvar em PDF</strong>.</p>
+
+    <div class="credit">
+      <p class="credit-name">Cláudia Botelho</p>
+      <p class="credit-role">Psicóloga e orientadora profissional · Instituto Rumo</p>
+      <p class="credit-links">
+        <a href="mailto:faleconosco@institutorumo.com">faleconosco@institutorumo.com</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://wa.me/5521990625330">(21) 99062-5330</a>
+      </p>
+    </div>
   </footer>
 
 </div>
@@ -703,13 +743,13 @@
   "use strict";
 
   var FAMILIES = [
-    { key: "alegria",  face: "😊", label: "Alegria",  color: "var(--f-alegria)",  words: ["Contente", "Animada", "Grata", "Aliviada", "Orgulhosa"] },
-    { key: "calma",    face: "🙂", label: "Calma",    color: "var(--f-calma)",    words: ["Tranquila", "Serena", "Confiante", "Descansada"] },
-    { key: "tristeza", face: "😔", label: "Tristeza", color: "var(--f-tristeza)", words: ["Desanimada", "Sozinha", "Magoada", "Vazia", "Com saudade"] },
-    { key: "medo",     face: "😰", label: "Medo",     color: "var(--f-medo)",     words: ["Ansiosa", "Insegura", "Preocupada", "Assustada"] },
-    { key: "raiva",    face: "😠", label: "Raiva",    color: "var(--f-raiva)",    words: ["Irritada", "Frustrada", "Injustiçada", "Impaciente"] },
-    { key: "cansaco",  face: "😩", label: "Cansaço",  color: "var(--f-cansaco)",  words: ["Exausta", "Sem energia", "Sobrecarregada"] },
-    { key: "surpresa", face: "😲", label: "Surpresa", color: "var(--f-surpresa)", words: ["Espantada", "Confusa", "Curiosa"] }
+    { key: "alegria",  face: "😊", label: "Alegria",  color: "var(--f-alegria)",  words: ["Contente", "Animado", "Grato", "Aliviado", "Orgulhoso"] },
+    { key: "calma",    face: "🙂", label: "Calma",    color: "var(--f-calma)",    words: ["Tranquilo", "Sereno", "Confiante", "Descansado"] },
+    { key: "tristeza", face: "😔", label: "Tristeza", color: "var(--f-tristeza)", words: ["Desanimado", "Sozinho", "Magoado", "Vazio", "Com saudade"] },
+    { key: "medo",     face: "😰", label: "Medo",     color: "var(--f-medo)",     words: ["Ansioso", "Inseguro", "Preocupado", "Assustado"] },
+    { key: "raiva",    face: "😠", label: "Raiva",    color: "var(--f-raiva)",    words: ["Irritado", "Frustrado", "Injustiçado", "Impaciente"] },
+    { key: "cansaco",  face: "😩", label: "Cansaço",  color: "var(--f-cansaco)",  words: ["Exausto", "Sem energia", "Sobrecarregado"] },
+    { key: "surpresa", face: "😲", label: "Surpresa", color: "var(--f-surpresa)", words: ["Espantado", "Confuso", "Curioso"] }
   ];
 
   var STORE = "rumo-diario-emocoes-v1";
@@ -748,9 +788,9 @@
       exemplo: true,
       when: new Date().toISOString(),
       family: "medo",
-      feelings: ["Ansiosa", "Insegura"],
+      feelings: ["Ansioso", "Inseguro"],
       intensity: 7,
-      atividade: "Fim da tarde, sozinha em casa, olhando o celular antes de começar a estudar.",
+      atividade: "Fim da tarde, sozinho em casa, olhando o celular antes de começar a estudar.",
       pensamento: "“Eu não vou dar conta de tudo isso a tempo.”",
       acao: "Fiquei rolando o feed por quase uma hora. Na próxima quero fechar o celular e escrever só as três tarefas do dia."
     };
