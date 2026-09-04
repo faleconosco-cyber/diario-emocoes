@@ -652,7 +652,7 @@
   <header>
     <p class="eyebrow">Cláudia Botelho · Psicologia e Orientação Profissional</p>
     <h1>Diário das Emoções</h1>
-    <p class="intro">Cinco passos curtos para registrar como você está agora. Não existe resposta certa — o que interessa é o que você percebeu. E o humor muda mesmo várias vezes no mesmo dia: sempre que mudar, faça um registro novo.</p>
+    <p class="intro">Cinco passos curtos para registrar como você está agora. Não existe resposta certa. O que interessa é o que você percebeu. E o humor muda mesmo várias vezes no mesmo dia: sempre que mudar, faça um registro novo.</p>
   </header>
 
   <form class="card no-print" id="form">
@@ -675,7 +675,7 @@
         <span class="step-num">2</span>
         <h2 class="step-title">Que nome esse sentimento tem?</h2>
       </div>
-      <p class="hint">Escolha quantas palavras quiser — elas não precisam combinar com a carinha do passo 1. E se faltar alguma, escreva a sua no campo do fim.</p>
+      <p class="hint">Escolha quantas palavras quiser. Elas não precisam combinar com a carinha do passo 1. E se faltar alguma, escreva a sua no campo do fim.</p>
       <div class="chips" id="chips"></div>
       <input type="text" id="feelFree" placeholder="Faltou uma palavra? Escreva a sua aqui">
       <div class="intensity">
@@ -706,7 +706,7 @@
         <span class="step-num">5</span>
         <h2 class="step-title">O que você fez com isso?</h2>
       </div>
-      <textarea id="acao" placeholder="O que você fez na hora — e o que gostaria de fazer numa próxima vez."></textarea>
+      <textarea id="acao" placeholder="O que você fez na hora e o que gostaria de fazer numa próxima vez."></textarea>
     </div>
 
     <div class="actions">
@@ -745,7 +745,7 @@
   <p class="status no-print" id="exportStatus" role="status"></p>
 
   <footer>
-    <p>Os registros ficam salvos só neste aparelho, neste navegador — nada é enviado automaticamente para ninguém.</p>
+    <p>Os registros ficam salvos só neste aparelho, neste navegador. Nada é enviado automaticamente para ninguém.</p>
     <p>Para levar à sessão, toque em <strong>Copiar para enviar</strong> e cole no WhatsApp, ou use <strong>Imprimir / salvar em PDF</strong>.</p>
 
     <div class="credit">
@@ -943,7 +943,7 @@
     if (!n) {
       el.textContent = "Sempre que o humor virar, toque aqui: começa um registro novo e nenhum dos anteriores se perde.";
     } else if (n === 1) {
-      el.textContent = "Hoje você registrou 1 vez. Se mudar de novo, toque no botão — o de antes fica guardado.";
+      el.textContent = "Hoje você registrou 1 vez. Se mudar de novo, toque no botão. O de antes fica guardado.";
     } else {
       el.textContent = "Hoje você já registrou " + n + " momentos. Todos ficam guardados aqui embaixo.";
     }
@@ -1084,11 +1084,11 @@
         var d = new Date(e.when);
         var n = countOnDay(day);
         lines.push("== " + DIAS[d.getDay()] + ", " + d.getDate() + " de " + MESES[d.getMonth()] +
-                   " — " + (n === 1 ? "1 registro" : n + " mudanças de humor") + " ==");
+                   " · " + (n === 1 ? "1 registro" : n + " mudanças de humor") + " ==");
         lines.push("");
       }
-      lines.push("— " + formatWhen(e.when) + (e.exemplo ? "  (exemplo)" : ""));
-      lines.push("Emoção: " + f.label + (e.feelings.length ? " (" + e.feelings.join(", ") + ")" : "") + " — intensidade " + e.intensity + "/10");
+      lines.push("• " + formatWhen(e.when) + (e.exemplo ? "  (exemplo)" : ""));
+      lines.push("Emoção: " + f.label + (e.feelings.length ? " (" + e.feelings.join(", ") + ")" : "") + ", intensidade " + e.intensity + "/10");
       if (e.atividade) lines.push("O que acontecia: " + e.atividade);
       if (e.pensamento) lines.push("Pensamento: " + e.pensamento);
       if (e.acao) lines.push("O que fiz: " + e.acao);
@@ -1169,7 +1169,7 @@
   $("newBtn").addEventListener("click", function () {
     $("form").reset();
     resetForm();
-    $("status").textContent = "Este é um registro novo — os anteriores continuam guardados em “Seu dia até agora”.";
+    $("status").textContent = "Este é um registro novo. Os anteriores continuam guardados em “Seu dia até agora”.";
     $("form").scrollIntoView({ behavior: "smooth", block: "start" });
     window.setTimeout(function () {
       var first = $("emojiRow").firstChild;
